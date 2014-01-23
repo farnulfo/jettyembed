@@ -7,6 +7,8 @@ import static com.codahale.metrics.MetricRegistry.name;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,6 +28,11 @@ public class App {
     protected void service(HttpServletRequest request, HttpServletResponse response) throws IOException {
       response.setContentType("text/plain");
       response.getWriter().write(getClass().getName() + " - OK");
+      try {
+        Thread.sleep(1000);
+      } catch (InterruptedException ex) {
+        Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+      }
     }
   }
 
@@ -35,6 +42,7 @@ public class App {
     Server server = new Server(8080);
     final ArrayBlockingQueue<Runnable> arrayBlockingQueue = new ArrayBlockingQueue<Runnable>(10);
     final QueuedThreadPool queuedThreadPool = new QueuedThreadPool(arrayBlockingQueue);
+    queuedThreadPool.setMaxThreads(5);
 
     registry.register(name(QueuedThreadPool.class, "taille"), new Gauge<Integer>() {
       @Override
