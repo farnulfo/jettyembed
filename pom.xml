@@ -40,7 +40,7 @@
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-jmx</artifactId>
-      <version>8.1.14.v20131031</version>
+      <version>9.4.19.v20190610</version>
     </dependency>
     <dependency>
       <groupId>com.codahale.metrics</groupId>
